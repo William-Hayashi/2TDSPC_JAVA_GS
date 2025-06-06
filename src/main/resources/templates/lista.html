@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title.lista}">Lista</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<!-- Seletor de idioma estilizado -->
+<form method="get" onchange="this.submit()" style="
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    background-color: var(--box-color, #fff);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+    z-index: 999;
+">
+    <label for="lang" style="margin-right: 6px; font-weight: 500;" th:text="#{idioma.label}">🌐 Idioma:</label>
+    <select name="lang" id="lang" style="
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+  ">
+        <option value="pt" th:selected="${#locale.language == 'pt'}">🇧🇷 Português</option>
+        <option value="en" th:selected="${#locale.language == 'en'}">🇺🇸 English</option>
+        <option value="es" th:selected="${#locale.language == 'es'}">🇪🇸 Español</option>
+        <option value="ru" th:selected="${#locale.language == 'ru'}">🇷🇺 Русский</option>
+    </select>
+</form>
+
+<body class="bg-gray-100 min-h-screen p-6">
+<div class="max-w-6xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800" th:text="#{title.lista}">Ocorrências</h1>
+        <a th:href="@{/ocorrencias/nova}"
+           class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition font-medium"
+           th:text="#{lista.nova}">+ Nova</a>
+    </div>
+
+    <table class="w-full table-auto text-left border-collapse">
+        <thead class="bg-gray-200 text-gray-700">
+        <tr>
+            <th class="p-3" th:text="#{form.nome}">Nome</th>
+            <th class="p-3" th:text="#{form.localizacao}">Localização</th>
+            <th class="p-3" th:text="#{form.descricao}">Descrição</th>
+            <th class="p-3 text-center" th:text="#{lista.acoes}">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${ocorrencias}" class="border-b hover:bg-gray-50">
+            <td class="p-3" th:text="${o.nome}">Nome</td>
+            <td class="p-3" th:text="${o.localizacao}">Localização</td>
+            <td class="p-3" th:text="${o.descricao}">Descrição</td>
+            <td class="p-3 text-center space-x-2">
+                <a th:href="@{'/ocorrencias/editar/' + ${o.id}}"
+                   class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-lg text-sm shadow transition"
+                   th:text="#{lista.editar}">Editar</a>
+
+                <a th:href="@{'/ocorrencias/deletar/' + ${o.id}}"
+                   th:onclick="'return confirm(\'' + #{lista.confirm} + '\')'"
+                   class="inline-block bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-lg text-sm shadow transition"
+                   th:text="#{lista.excluir}">Excluir</a>
+            </td>
+        </tr>
+        <tr th:if="${ocorrencias.isEmpty()}" class="text-center">
+            <td colspan="4" class="p-4 text-gray-500" th:text="#{lista.vazia}">Nenhuma ocorrência cadastrada.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

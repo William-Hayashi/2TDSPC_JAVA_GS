@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{cadastro.titulo}">Cadastro - Global Java</title>
+    <style>
+        /* Mesmo estilo do login */
+        body {
+            background-color: #f6f8fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .box {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: 360px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #2ea44f;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .link {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .link a {
+            color: #0969da;
+            text-decoration: none;
+        }
+        .alerta-erro {
+            background-color: #ffe0e0;
+            border: 1px solid #ff8c8c;
+            color: #b00020;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(255, 0, 0, 0.1);
+        }
+
+    </style>
+</head>
+<!-- Seletor de idioma estilizado -->
+<form method="get" onchange="this.submit()" style="
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    background-color: var(--box-color, #fff);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+    z-index: 999;
+">
+    <label for="lang" style="margin-right: 6px; font-weight: 500;" th:text="#{idioma.label}">🌐 Idioma:</label>
+    <select name="lang" id="lang" style="
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+  ">
+        <option value="pt" th:selected="${#locale.language == 'pt'}">🇧🇷 Português</option>
+        <option value="en" th:selected="${#locale.language == 'en'}">🇺🇸 English</option>
+        <option value="es" th:selected="${#locale.language == 'es'}">🇪🇸 Español</option>
+        <option value="ru" th:selected="${#locale.language == 'ru'}">🇷🇺 Русский</option>
+    </select>
+</form>
+
+<body>
+<div class="box">
+    <h2 th:text="#{cadastro.titulo}">Cadastro</h2>
+
+    <form th:action="@{/cadastro}" th:object="${usuario}" method="post">
+        <input type="text" th:field="*{nome}" th:placeholder="#{cadastro.nome}" required />
+        <input type="email" th:field="*{email}" th:placeholder="#{cadastro.email}" required />
+        <input type="password" th:field="*{senha}" th:placeholder="#{cadastro.senha}" required />
+        <button type="submit" th:text="#{cadastro.botao}">Cadastrar</button>
+    </form>
+
+    <div th:if="${erro}" class="alerta-erro">
+        ⚠️ <span th:text="${erro}"></span>
+    </div>
+
+    <div class="link">
+        <span th:text="#{cadastro.jatemconta}">Já tem conta?</span>
+        <a href="/login" th:text="#{cadastro.entrar}">Entrar</a>
+    </div>
+</div>
+</body>
+</html>

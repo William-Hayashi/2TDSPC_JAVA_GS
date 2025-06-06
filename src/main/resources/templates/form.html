@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${ocorrencia.id == null} ? #{title.form.nova} : #{title.form.editar}">Formulário</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Seletor de idioma estilizado -->
+  <form method="get" onchange="this.submit()" style="
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    background-color: var(--box-color, #fff);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+    z-index: 999;
+">
+    <label for="lang" style="margin-right: 6px; font-weight: 500;" th:text="#{idioma.label}">🌐 Idioma:</label>
+    <select name="lang" id="lang" style="
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+  ">
+      <option value="pt" th:selected="${#locale.language == 'pt'}">🇧🇷 Português</option>
+      <option value="en" th:selected="${#locale.language == 'en'}">🇺🇸 English</option>
+      <option value="es" th:selected="${#locale.language == 'es'}">🇪🇸 Español</option>
+      <option value="ru" th:selected="${#locale.language == 'ru'}">🇷🇺 Русский</option>
+    </select>
+  </form>
+
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<div class="bg-white p-10 rounded-2xl shadow-xl w-full max-w-xl">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6"
+      th:text="${ocorrencia.id == null} ? #{title.form.nova} : #{title.form.editar}">Nova Ocorrência</h1>
+
+  <form th:action="@{/ocorrencias}" th:object="${ocorrencia}" method="post" class="space-y-5">
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700" th:text="#{form.nome}">Nome</label>
+      <input type="text" th:field="*{nome}"
+             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+             required />
+    </div>
+
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700" th:text="#{form.localizacao}">Localização</label>
+      <input type="text" th:field="*{localizacao}"
+             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+             required />
+    </div>
+
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700" th:text="#{form.descricao}">Descrição</label>
+      <textarea th:field="*{descricao}" rows="4"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                required></textarea>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <a th:href="@{/ocorrencias}"
+         class="text-gray-600 hover:text-gray-800 text-sm transition"
+         th:text="#{form.voltar}">← Voltar</a>
+      <button type="submit"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition font-medium shadow"
+              th:text="#{form.salvar}">Salvar</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{ocorrencias.titulo}">Ocorrências - Global Java</title>
+    <style>
+        :root {
+            --bg-color: #f9f9f9;
+            --card-bg: #ffffff;
+            --text-color: #1a1a1a;
+            --card-border: #e0e0e0;
+        }
+
+        body.dark {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --card-border: #30363d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.3rem;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .container {
+            padding: 30px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card p {
+            margin: 6px 0;
+        }
+
+        .card strong {
+            display: inline-block;
+            width: 120px;
+        }
+    </style>
+</head>
+<!-- Seletor de idioma estilizado -->
+<form method="get" onchange="this.submit()" style="
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    background-color: var(--box-color, #fff);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+    z-index: 999;
+">
+    <label for="lang" style="margin-right: 6px; font-weight: 500;" th:text="#{idioma.label}">🌐 Idioma:</label>
+    <select name="lang" id="lang" style="
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+  ">
+        <option value="pt" th:selected="${#locale.language == 'pt'}">🇧🇷 Português</option>
+        <option value="en" th:selected="${#locale.language == 'en'}">🇺🇸 English</option>
+        <option value="es" th:selected="${#locale.language == 'es'}">🇪🇸 Español</option>
+        <option value="ru" th:selected="${#locale.language == 'ru'}">🇷🇺 Русский</option>
+    </select>
+</form>
+
+<body>
+<header>
+    < <div class="logo">🌍 Global Java</div>
+    <div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">🌓</button>
+        <a href="/logout" style="margin-left: 10px;" th:text="#{ocorrencias.sair}">Sair</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2 th:text="#{ocorrencias.tituloRegistradas}">⚠️ Ocorrências Registradas</h2>
+
+    <div th:each="ocorrencia : ${ocorrencias}" class="card">
+        <p><strong>📍 <span th:text="#{ocorrencias.local}">Local:</span></strong> <span th:text="${ocorrencia.localizacao}">Centro</span></p>
+        <p><strong>🌀 <span th:text="#{ocorrencias.problema}">Problema:</span></strong> <span th:text="${ocorrencia.problema}">Alagamento</span></p>
+        <p><strong>📅 <span th:text="#{ocorrencias.data}">Data:</span></strong> <span th:text="${ocorrencia.data}">2025-06-02</span></p>
+        <p><strong>🧍 <span th:text="#{ocorrencias.responsavel}">Responsável:</span></strong> <span th:text="${ocorrencia.usuario.nome}">Ana Silva</span></p>
+    </div>
+</div>
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        body.classList.toggle('dark');
+        localStorage.setItem('tema', body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    window.onload = () => {
+        const temaSalvo = localStorage.getItem('tema');
+        if (temaSalvo === 'dark') {
+            document.body.classList.add('dark');
+        }
+    };
+</script>
+</body>
+</html>
