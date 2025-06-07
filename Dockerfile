@@ -1,6 +1,6 @@
-FROM eclipse-temurin:17-jdk-slim
+FROM eclipse-temurin:17-jdk
 
-# Adiciona suporte a certificados SSL confiáveis
+# Adiciona certificados confiáveis (essencial para conexão SSL com Atlas)
 RUN apt-get update && apt-get install -y ca-certificates && apt-get clean
 
 WORKDIR /app
