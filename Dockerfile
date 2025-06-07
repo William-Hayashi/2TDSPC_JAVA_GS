@@ -1,7 +1,6 @@
-# Use JDK com suporte TLS testado
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:17-jdk-slim
 
-# Instale certificados raiz confiáveis (SSL)
+# Adiciona suporte a certificados SSL confiáveis
 RUN apt-get update && apt-get install -y ca-certificates && apt-get clean
 
 WORKDIR /app
